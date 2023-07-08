@@ -1,18 +1,14 @@
 import { Router } from "express";
-
-// Importar as functions usadas no controler, lembrar do .js
-//import { getUser, signin, signup } from "../controllers/usuarios.controller.js"
-// Outras validações, vamos olhar direito oq fazem
-/*
-import { validateSchema } from "../middlewares/validateSchema.js"
-import { schemaUsuario } from "../schemas/usuario.schemas.js"
-import { validateAuth } from "../middlewares/validateAuth.js"
-*/
+import { validateSchema } from "../middlewares/validateSchema.js";
+import { validadeAuth } from "../middlewares/validateAuthorization.js";
+import { schemaTransaction } from "../schemas/transactionSchemas.js";
+import { doTransaction, historyTransactions } from "../controllers/transactionController.js";
 
 const transationRouter = Router();
 
-transationRouter.post("/sign-up", (req,res) => console.log(req.body));
+transationRouter.use(validadeAuth);
 
-
+transationRouter.post("/nova-transacao/:type", validateSchema(schemaTransaction), doTransaction);
+transationRouter.get("/home", historyTransactions);
 
 export default transationRouter;
