@@ -30,8 +30,12 @@ export async function historyTransactions(req, res) {
 
     try {
         const list = await db.collection("transactions").find({ idUser: session.idUser }).toArray();
+        const user = await db.collection("users").find({_id: session.idUser}).toArray();
+
+        delete user.password;
+        delete user.email;
         
-        res.send(list);
+        res.send({name: user[0].name, list: list});
     } catch (err) {
         res.status(500).send(err.message);
     }

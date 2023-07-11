@@ -39,3 +39,15 @@ export async function signIn(req, res) {
         res.status(500).send(err.message);
     }
 }
+
+export async function logout(req, res) {
+    const { session } = res.locals;
+    
+    try {
+        await db.collection("session").deleteMany({ idUser: session.idUser });
+        res.sendStatus(200);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
